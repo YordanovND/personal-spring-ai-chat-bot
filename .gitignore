@@ -15,6 +15,4 @@ out/
 Thumbs.db
 
 # Environment
-application.yaml
-application.properties
 .env
