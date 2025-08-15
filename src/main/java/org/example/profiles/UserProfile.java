@@ -5,5 +5,9 @@ public record UserProfile(
         String name,
         String timezone,
         String role,
-        String[] interests
+        String location,
+        String education,
+        String[] interests,
+        String[] values,
+        Project[] projects
 ) {}

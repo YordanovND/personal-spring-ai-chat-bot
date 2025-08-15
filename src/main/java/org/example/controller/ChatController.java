@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.profiles.Project;
 import org.example.profiles.UserProfile;
 import org.example.profiles.UserProfileService;
 import org.example.prompts.PromptTemplate;
@@ -49,8 +50,11 @@ public class ChatController {
     private String inferScopeFromMessage(String m) {
         if (m == null) return "profile";
         String q = m.toLowerCase();
-        if (q.matches(".*\\b(job|work|occupation|title|role)\\b.*")) return "job";
-        if (q.matches(".*\\b(hobby|interest|interests|like|favorite|favourite)\\b.*")) return "interests";
+
+        if (q.matches(".*\\b(project|projects|portfolio|github|case study|case studies)\\b.*")) return "projects";
+        if (q.matches(".*\\b(job|work|occupation|title|role|experience|resume|cv)\\b.*"))       return "job";
+        if (q.matches(".*\\b(hobby|interest|interests|like|favorite|favourite)\\b.*"))          return "interests";
+
         return "profile";
     }
 
@@ -59,15 +63,40 @@ public class ChatController {
                 "name", p.name(),
                 "role", p.role(),
                 "timezone", p.timezone(),
-                "interests", String.join(", ", p.interests())
+                "location", p.location(),
+                "education", p.education(),
+                "interests", String.join(", ", p.interests()),
+                "values", String.join(", ", p.values()),
+                "projects_bullets", projectsToBullets(p.projects())
         );
 
         return switch (scope) {
             case "job"       -> templates.render("job", vars);
             case "interests" -> templates.render("interests", vars);
+            case "projects"  -> templates.render("projects", vars);
             case "profile"   -> templates.render("profile", vars);
             case "all"       -> templates.render("all", vars);
             default          -> templates.render("fallback", vars);
         };
     }
+
+    private String projectsToBullets(Project[] projects) {
+        if (projects == null || projects.length == 0) return "- (no projects listed)";
+        var sb = new StringBuilder();
+        for (var pr : projects) {
+            sb.append("- **").append(pr.name()).append("**");
+            if (pr.role() != null && !pr.role().isBlank()) sb.append(" — ").append(pr.role());
+            if (pr.stack() != null && !pr.stack().isBlank()) sb.append(" · _").append(pr.stack()).append("_");
+            if (pr.link() != null && !pr.link().isBlank()) sb.append(" · ").append(pr.link());
+            if (pr.highlights() != null && pr.highlights().length > 0) {
+                sb.append("\n  ");
+                for (String h : pr.highlights()) {
+                    sb.append("  • ").append(h).append("\n  ");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString().trim();
+    }
+
 }
