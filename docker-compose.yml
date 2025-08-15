@@ -6,18 +6,30 @@ services:
       - "11434:11434"
     volumes:
       - ollama:/root/.ollama
-    # Start API, wait for it, pull model if needed, then keep serving
-    entrypoint: >
-      sh -c "ollama serve &
-             until curl -sf http://localhost:11434/api/version >/dev/null; do sleep 1; done &&
-             (ollama list | grep -q '^llama3 ' || ollama pull llama3) &&
-             wait"
+    entrypoint: ["ollama", "serve"]
     healthcheck:
-      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1"]
+      test: ["CMD-SHELL", "ollama show llama3 >/dev/null 2>&1"]
       interval: 10s
       timeout: 5s
-      retries: 60
+      retries: 120
 
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: ollama-pull
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+    volumes:
+      - ollama:/root/.ollama
+    depends_on:
+      ollama:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -lc
+      - |
+        # wait until server responds, then pull the model
+        until ollama list >/dev/null 2>&1; do sleep 1; done
+        ollama pull llama3
 
   app:
     build:
@@ -25,14 +37,16 @@ services:
       dockerfile: Dockerfile
     container_name: spring-ai-chat
     ports:
-      - "8080:8080"
+      - "8085:8080"  # host:container
     environment:
       SPRING_AI_OLLAMA_BASE_URL: "http://ollama:11434"
-      SPRING_PROFILES_ACTIVE: "prod"   # avoids dev-only runners at startup
-      # SPRING_AI_OLLAMA_CHAT_OPTIONS_MODEL: "llama3"  # optional override
+      SPRING_PROFILES_ACTIVE: "prod"
+      # SPRING_AI_OLLAMA_CHAT_OPTIONS_MODEL: "llama3"  # optional
     depends_on:
       ollama:
         condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
 
 volumes:
   ollama:
