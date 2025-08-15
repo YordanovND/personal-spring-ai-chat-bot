@@ -1,0 +1,47 @@
+<div class="shell">
+  <section class="card" style="display:grid; gap:1rem;">
+    <header class="chat-header">
+      <div class="chat-title">
+        <div class="avatar">🤖</div>
+        <div>
+          <h2>Ask me anything</h2>
+          <p class="subtitle">Powered by Spring AI (Ollama) from this repo.</p>
+        </div>
+      </div>
+      <span class="badge">/api/ai/chat</span>
+    </header>
+
+    <div #scroll class="chat">
+      <div *ngFor="let m of messages(); trackBy: track" class="row" [class.user]="m.role==='user'">
+        <div class="avatar">{{ m.role==='user' ? '🧑' : '🤖' }}</div>
+        <div class="bubble" [innerHTML]="m.role==='assistant' ? (m.content | markdown) : m.content"></div>
+      </div>
+      <div class="row" *ngIf="thinking()">
+        <div class="avatar">🤖</div>
+        <div class="bubble typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <textarea
+        class="input"
+        autosize
+        [(ngModel)]="draft"
+        (keydown.enter)="onEnter($event)"
+        placeholder="Ask about my experience, skills, projects…">
+      </textarea>
+      <div class="composer-actions">
+        <button class="btn" (click)="clear()" [disabled]="!messages().length">Clear</button>
+        <button class="btn primary" (click)="send()" [disabled]="!draft.trim() || thinking()">Send</button>
+      </div>
+    </div>
+
+    <div *ngIf="!messages().length" class="quick-buttons">
+      <button class="btn" (click)="fill('Give me a summary of your background.')">Summary</button>
+      <button class="btn" (click)="fill('What are your top 3 projects and why?')">Top 3 projects</button>
+      <button class="btn" (click)="fill('How do you approach system design?')">System design</button>
+    </div>
+  </section>
+</div>

@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+/* ---------- Theme tokens ---------- */
+:root {
+  --bg: #0b0c10;
+  --bg-elev: #12131a;
+  --panel: #0f1117;
+  --fg: #e9ecf1;
+  --muted: #a9b1bd;
+  --border: #222633;
+  --accent: #6c63ff;        /* primary */
+  --accent-2: #38bdf8;      /* secondary */
+  --danger: #ef476f;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0,0,0,.28);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto, "Helvetica Neue", Arial;
+  color: var(--fg);
+  background:
+    radial-gradient(1200px 800px at 20% -10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%),
+    radial-gradient(900px 700px at 120% 10%, color-mix(in oklab, var(--accent-2) 16%, transparent), transparent 60%),
+    var(--bg);
+}
+
+/* ---------- Utilities ---------- */
+.container { max-width: 860px; margin: 0 auto; padding: 16px; }
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.22);
+  padding: 1rem;
+}
+.btn { padding: .55rem .85rem; border-radius: 12px; font-weight: 600; }
+.btn.primary { border-color: transparent; }
+.btn.secondary { background: color-mix(in oklab, var(--accent-2) 20%, var(--bg-elev)); }
+.btn.ghost { background: transparent; }
+.badge {
+  display:inline-flex; align-items:center; padding:.4rem .7rem;
+  border:1px solid var(--border); border-radius: 999px; color: var(--muted);
+}
+.lede { color: var(--muted); font-size: 1.05rem; }
+
+/* Floating “Chat with me” button */
+.fab {
+  position: fixed; right: 24px; bottom: 24px; z-index: 40;
+  border-radius: 999px; padding: .9rem 1.1rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), color-mix(in oklab, var(--accent-2) 60%, var(--accent)));
+  border: none; color:#fff; box-shadow: 0 10px 20px rgba(0,0,0,.35);
+}
+.fab:hover { filter: brightness(1.08); }
+
+/* Simple link look */
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Make headings crisp */
+h1,h2,h3 { margin: 0 0 .5rem 0; letter-spacing: -0.02em; }

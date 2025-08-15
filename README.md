@@ -1,41 +1,26 @@
-# Spring AI Chat with Ollama (Dockerized)
+# 🗣️ Spring AI Chat + Angular (Ollama, Dockerized)
 
-This project is a **Spring Boot** application that integrates with **Ollama** to provide AI-powered chat capabilities using local LLMs such as **Meta-Llama-3-8B-Instruct**.  
-It’s fully containerized using **Docker Compose**, so you can spin up both the application and the Ollama backend in one command.
+A full-stack personal portfolio with a **chatbot front-and-center**.
 
----
-
-## 🧠 Project Overview
-
-The app serves a simple REST API that accepts chat prompts from the user and returns AI-generated responses from the LLM running in Ollama.  
-It is designed as a **self-contained environment** — no external API keys are required because the AI runs locally inside Docker.
+- **Frontend:** Angular 16+ (standalone), built and served by Spring Boot
+- **Backend:** Spring Boot 3 + Spring AI
+- **LLM runtime:** Ollama (default model: `llama3`)
+- **Containerization:** Docker & Docker Compose
 
 ---
 
-## 🛠️ Technologies Used
+## ✨ Features
 
-- **Java 21** — the core language for the backend.
-- **Spring Boot 3** — application framework for building and serving APIs.
-- **Spring AI** — abstraction for integrating AI models into Spring applications.
-- **Gradle** — build and dependency management.
-- **Ollama** — lightweight LLM runner for local AI inference.
-- **Meta-Llama-3-8B-Instruct** — default AI model.
-- **Docker & Docker Compose** — containerization and service orchestration.
-
-
-## 🚀 Getting Started
-
-### 1️⃣ Prerequisites
-Make sure you have installed:
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [Java 21](https://adoptium.net/) (only if running locally without Docker)
-- [Gradle](https://gradle.org/) (only if building locally without Docker)
+- **Ask Me** chatbot (`/ask`) powered by Spring AI + Ollama
+- Clean, dark UI with compact chat, typing indicator, and sticky navbar
+- Single container serving **both** the Angular SPA and the API (no CORS)
+- Optional local dev mode with Angular dev-server + API proxy
 
 ---
 
-### 2️⃣ Start with Docker
+## 🚀 Quick Start (Docker)
 
 ```bash
-# Build and start the services
+# Build and start everything (Ollama + the app)
 docker compose up --build
 

@@ -1,0 +1,20 @@
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .9rem 1.25rem;
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  color: var(--fg); font-weight: 800; letter-spacing: -0.02em;
+  text-decoration: none; font-size: 1.05rem;
+}
+.brand .accent { color: var(--accent); }
+.links { display: flex; gap: .8rem; align-items: center; }
+.links a {
+  color: var(--muted); text-decoration: none; padding: .45rem .7rem; border-radius: 10px;
+}
+.links a.active { color: var(--fg); background: var(--panel); border: 1px solid var(--border); }
+.links a.cta { background: var(--accent); color: #fff; border: none; }
+.links a.cta:hover { filter: brightness(1.08); }

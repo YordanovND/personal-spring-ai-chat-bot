@@ -10,6 +10,7 @@ RUN npm run build -- --configuration=production
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 COPY . .
+RUN chmod +x ./gradlew
 RUN rm -rf src/main/resources/static/* || true
 COPY --from=web /web/dist/web/browser/ src/main/resources/static/
 
